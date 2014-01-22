@@ -104,10 +104,10 @@ Reusing code is great, since it minimises file size - but further down the road 
 
 **Incorrect:** too broad
 
-img {
-        border: 1px solid grey;
-        padding: 1px;
-    }
+    img {
+            border: 1px solid grey;
+            padding: 1px;
+        }
 
 **Incorrect:** this path leads to convoluted code
 
@@ -129,11 +129,11 @@ img {
 Selectors
 ---------
 
-‘With great power there must also come great responsibility’ - Uncle Ben
+*‘With great power there must also come great responsibility’ - Uncle Ben*
 
 Broad selectors give efficient and easily understandable code, but can lead to unseen consequences. Very specific selectors can target accurately, but tend to lead to a cluttered and large stylesheet.
 
-**Don't use `#ids` for styling.** They're too specific and give long term pain. They lack reusability, tend to lean towards use-once code, and the only way to override them is with the dreaded `!important`. So we don't use #id for styling.
+**Don't use `#id` for styling.** They're too specific and give long term pain. They lack reusability, tend to lean towards use-once code, and the only way to override them is with the dreaded `!important`. So we don't use `#id` for styling.
 
 **Broad selectors - such as `figure`, `header`, `footer` - are broadly fine**. They should be used as foundation styles, but be careful when using broader selectors such as section and article.
 
@@ -191,10 +191,11 @@ Broad selectors give efficient and easily understandable code, but can lead to u
 Properties
 ----------
 
-- 0.5em, not .5em - makes it easier to distinguish between 0.5em and 5em
+- 0.5em, not .5em - as makes it easier to distinguish between 0.5em and 5em
 - Single quotation marks for attribute selectors, property values, and URI values.
-- font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-- background-image: url('dancing-cat.gif');;
+
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-image: url('dancing-cat.gif');
 
 
 Property ordering
@@ -222,7 +223,9 @@ A special mention for vendor prefixes; they're alphabetacised as if they don't h
 
 If you’re using Sass or LESS, then use the variables and mixins file as a repository for vendor prefixed styles. You can then just use `.transition(all 300ms linear);` to keep the code clean.
 
-## Property values - Pixels vs. Ems
+
+Property values - Pixels vs. Ems
+--------------------------------
 
 The property preference hiererchy goes:
 
@@ -246,7 +249,9 @@ For example, in LESS or Sass:
 
 If you don't use preprocessors, then still use `em` - the numbers will just neeed to be calculated by hand.
 
-## How to comment
+
+How to comment
+--------------
 
 Comments within the code should be easily visible, but not create muddle. With this in mind, these are the following rules for commenting within CSS.
 
@@ -290,7 +295,9 @@ If referring to an individual property, it should sit on the same line after the
     
     font-size: 1.25em; /* equivalent to 20px */
 
-## File structure
+
+File structure
+--------------
 
 The SMACSS file structure[^!smacssguide], with some tweaks of our own. We use a concatenator - which can be included with either SASS or LESS - to produce a single, minifed stylesheet from several different files.
 
@@ -306,7 +313,9 @@ Output is a minified, single file:
 
 - style.css
 
-## Media Queries
+
+Media Queries
+-------------
 
 Mobile first, then larger screens, then the largest screens. 
 
