@@ -194,8 +194,10 @@ Properties
 - 0.5em, not .5em - as makes it easier to distinguish between 0.5em and 5em
 - Single quotation marks for attribute selectors, property values, and URI values.
 
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-image: url('dancing-cat.gif');
+    header {
+        font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background-image: url('dancing-cat.gif');
+    }
 
 
 Property ordering
@@ -221,7 +223,7 @@ A special mention for vendor prefixes; they're alphabetacised as if they don't h
         -webkit-transition: all linear;
     transition: all 300ms linear;
 
-If you’re using Sass or LESS, then use the variables and mixins file as a repository for vendor prefixed styles. You can then just use `.transition(all 300ms linear);` to keep the code clean.
+If you’re using Sass or Less, then use a variables and mixins file as a repository for vendor prefixed styles. You can then just use `.transition(all 300ms linear);` or `@include transition(all 300ms linear);` to keep the code clean.
 
 
 Property values - Pixels vs. Ems
@@ -236,7 +238,7 @@ Whether `em` or `%` is used is dependant on the situation, but the important thi
 
 Pixels aren't needed - preprocessors can do the division for you to convert `px` into the `em` equivalent.
 
-For example, in LESS or Sass:
+For example, in Less or Sass:
 
     /* method: */
     width: ( [pixel number] / [parent element em size]em );
@@ -248,6 +250,8 @@ For example, in LESS or Sass:
     width: 1.25em;
 
 If you don't use preprocessors, then still use `em` - the numbers will just neeed to be calculated by hand.
+
+*The reasoning:* using either pixels and root ems block the cascade of inheritance. Using `em` or `%` we allow elements to inherit characteristics - which makes designing responsively much lighter, as we're not rewriting the CSS for every viewport size. 
 
 
 How to comment
@@ -317,9 +321,11 @@ Output is a minified, single file:
 Media Queries
 -------------
 
-Mobile first, then larger screens, then the largest screens. 
+If Internet Explorer 8 (or older) support is needed, then go desktop first. Any desktop styles then won't have be duplicated in an Internet Explorer only stylesheet.
 
-The breakpoints should be in `em`. 
+Otherwise, if Internet Explorer 8 (or older) support isn't required, then go mobile first.
+
+The breakpoints should be in `em`, as this provides the widest level of bug-free support.
 
 Any styles that are triggered by media queries should be placed within the stylesheets - not in their own stylesheet.
 
@@ -371,4 +377,4 @@ Footnotes
 
 [^!normalise]: [normalize.css](https://github.com/necolas/normalize.css) is kept separate to allow normalize.css to be updated easily.
 
-[^!HTML5block]: An exception is for HTML 5 elements, such as `section`, `header` etc. These should be display: block at the start of the stylesheet for older versions of Firefox. But then, you probably knew that - or are using something nifty like *normalise.css* which does that anyway.
+[^!HTML5block]: An exception is for HTML 5 elements, such as `section`, `header` etc. These should be display: block at the start of the stylesheet for older versions of Firefox. But then, you probably knew that - or are using something nifty like *normalize.css* which does that anyway.
