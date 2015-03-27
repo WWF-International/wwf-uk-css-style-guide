@@ -251,7 +251,9 @@ For example, in Less or Sass:
 
 If you don't use preprocessors, then still use `em` - the numbers will just neeed to be calculated by hand.
 
-*The reasoning:* using either pixels and root ems block the cascade of inheritance. Using `em` or `%` we allow elements to inherit characteristics - which makes designing responsively much lighter, as we're not rewriting the CSS for every viewport size. 
+*The reasoning:* using either pixels, points, or root ems block the cascade of inheritance. Using `em` or `%` we allow elements to inherit characteristics - which makes designing responsively much lighter, as we're not rewriting the CSS for every viewport size. 
+
+This can seem frustrating if you're unfamiliar with the C of CSS, but the killer advantage is that you can just change the root font size and everything else will change in proportion.
 
 
 How to comment
@@ -259,9 +261,9 @@ How to comment
 
 Comments within the code should be easily visible, but not create muddle. With this in mind, these are the following rules for commenting within CSS.
 
-**To do lists and noticed bugs that aren't yet fixed are incredible useful comments** - especially when using a repository such as git or svn. Please make notes within the code to help the rest of the organisation keep up with you.
+For consistancy, the CSS style comments - `/* */` - are always used, even when using preprocessors.
 
-For consistanct, the CSS style comments - `/* */` - are used.
+**To do lists and noticed bugs that aren't yet fixed are incredible useful comments** - especially when using a repository such as Git or SVN. Please make notes within the code to help the rest of the organisation keep up with you. As with JavaScript, use the prefixes `/* FIXME */` and `/* TODO */` where appropriate.
 
 At the top of the style.css (see *File structure*), this description should go as a minimum. Note the exclamation mark, which (should) preserve the comment after minification.
 
@@ -283,12 +285,13 @@ Any other descriptors are welcome - contact details, to do list etc.
     /* -----------------------------------------------------------------------------
         Heading
         - small description of what's going on here
-        - another point, maybe a bugfix
+        - another point, maybe a bugfix with a FIXME
+        - TODO if needed
     ----------------------------------------------------------------------------- */
     
 **Individual comments in the code** don't have the single or double lines.
 
-If referring to the whole selector, then the comment should sit inside it to avoid confusion.
+If referring to the whole selector, then the comment should sit inside it.
     
     .standfirst p {
         /* this is to make the first paragraph into a standfirst */
@@ -298,6 +301,7 @@ If referring to the whole selector, then the comment should sit inside it to avo
 If referring to an individual property, it should sit on the same line after the semicolon:
     
     font-size: 1.25em; /* equivalent to 20px */
+    margin-top: 1.48em; /* FIXME magic number */
 
 
 File structure
@@ -306,7 +310,7 @@ File structure
 The SMACSS file structure[^!smacssguide], with some tweaks of our own. We use a concatenator - which can be included with either SASS or LESS - to produce a single, minifed stylesheet from several different files.
 
 - style, which imports:
-     - variables-and-mixins (only if Sass or LESS is used)
+     - variables-and-mixins (only if Sass or Less are used)
      - normalize.css[^!normalise]
      - base
      - layout
@@ -325,7 +329,7 @@ If Internet Explorer 8 (or older) support is needed, then go desktop first. Any 
 
 Otherwise, if Internet Explorer 8 (or older) support isn't required, then go mobile first.
 
-The breakpoints should be in `em`, as this provides the widest level of bug-free support.
+The breakpoints should be in `em`, as this provides the widest level of consistent, bug-free support. Using `ems` in media queries doesn't use the root setting - it uses the browsers default font size, usually 16px.
 
 Any styles that are triggered by media queries should be placed within the stylesheets - not in their own stylesheet.
 
@@ -334,17 +338,17 @@ For example, within the <i>modules</i> stylesheet:
     [ Small screen rules for specific module here ]
     
     @media (min-width: 37.5em) {
-        /* break point is equivalent to 600px */
+        /* break point is equivalent to 600px (37.5 x 16) */
         [ Medium screen rules for specific module here ]
     }
     
     @media (min-width: 48em) {
-        /* Break point equivalent to 768px */
+        /* Break point equivalent to 768px (48 x 16) */
         [ Medium screen rules for specific module here ]
     }
     
     @media (min-width: 80em) {
-        /* Break point equivalent to 1280px */
+        /* Break point equivalent to 1280px (80 x 16) */
         [ Large screen rules for specific module here ]
     }
 
@@ -364,7 +368,7 @@ margin-top: 37px;
 }
 ```
 - Know when to use the height property. It should be used when you are including outside elements (such as images). Otherwise use line-height for more flexibility.
-- Do not restate default property &amp; value combinations (for instance display: block; on block-level elements [^!HTML5block].
+- Do not restate default property and value combinations (for instance `display: block;` on block-level elements [^!HTML5block].
 
 ---------------------------------------
 
