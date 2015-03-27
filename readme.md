@@ -24,6 +24,8 @@ General principles
 - Strictly adhere to the style syntax.
 - If in doubt when deciding upon a style - take a look at existing code and use common patterns.
 
+
+**tl;dr**
 - clarity over compactness
 - names-use-hyphens
 - no more than 3 multiple selectors
