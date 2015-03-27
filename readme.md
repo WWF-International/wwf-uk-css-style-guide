@@ -18,11 +18,19 @@ General principles
 
 *"Part of being a good steward to a successful project is realizing that writing code for yourself is a Bad Idea™. If thousands of people are using your code, then write your code for maximum clarity, not your personal preference of how to get clever within the spec." - Idan Gazit*
 
-- Don't try to prematurely optimize your code. Keep it readable and understandable.
+- Don't try to prematurely optimize your code - keep it readable and understandable.
 - Make sure it’s explained, commented and well named.
 - All code in any code-base should look like a single person typed it, even when many people are contributing to it.
 - Strictly adhere to the style syntax.
 - If in doubt when deciding upon a style - take a look at existing code and use common patterns.
+
+- clarity over compactness
+- names-use-hyphens
+- no more than 3 multiple selectors
+- never use #id
+- each selector and property on its own line
+- tabs
+- ems and %
 
 
 Structure
