@@ -3,15 +3,14 @@ WWF-UK CSS style guide
 
 This style guide sets out the internal practices for CSS. The objective for this is to make our stylesheets look as if they were written by one person, with consistent naming, formatting, commenting etc.
 
-Credit where credit is due; this guide draws heavily on and mashes up:
+##### Like our JavaScript style guide, this should be considered as both draft and canonical. Draft because I'm open to a debate on the practices defined. Canonical because in the absence of that debate the guidance here should be reflected in your code.
 
-- [Nicolas Hallagher’s Idiomatic CSS Style guide](https://github.com/necolas/idiomatic-css)
-- [WordPress’s coding handbook](http://make.wordpress.org/core/handbook/coding-standards/css/)
-- [Github’s coding style](https://github.com/styleguide/css)
-- [Harry Robert’s coding style](http://csswizardry.com/2012/04/my-html-css-coding-style/)
-- [Google’s coding style guide](http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml#CSS_Style_Rules)
-- [SMACSS guide](http://smacss.com)
+Credit where credit is due; this is basically WWF-flavoured [BEM](https://en.bem.info)
 
+Recommended reading:
+- **[MindBEMding - getting your head 'round BEM syntax](http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/)** - if you only read one, read this one.
+- [BEM key concepts](https://en.bem.info/method/key-concepts/)
+- [Naming conventions](https://en.bem.info/method/naming-convention/)
 
 General principles
 ------------------
@@ -19,19 +18,19 @@ General principles
 *"Part of being a good steward to a successful project is realizing that writing code for yourself is a Bad Idea™. If thousands of people are using your code, then write your code for maximum clarity, not your personal preference of how to get clever within the spec." - Idan Gazit*
 
 - Don't try to prematurely optimize your code - keep it readable and understandable.
-- Make sure it’s explained, commented and well named.
+- Make sure it's explained, commented and well named.
 - All code in any code-base should look like a single person typed it, even when many people are contributing to it.
 - Strictly adhere to the style syntax.
 - If in doubt when deciding upon a style - take a look at existing code and use common patterns.
 
 
 **tl;dr**
-- clarity over compactness
+- BEM (**b**lock__**e**lement--**m**odifier)
 - names-use-hyphens
-- no more than 3 multiple selectors
+- clarity over compactness
 - never use #id
 - each selector and property on its own line
-- tabs
+- indent with spaces - multiples of four
 - ems and %
 
 
@@ -40,15 +39,15 @@ Structure
 
 This may seem picky, but it really does help make sure that the code remains legible - and that people in the far distant future can tell what we were doing.
 
-- Tabs, not spaces, are used to indent
+- Spaces are used to indent in multiples of four
 - One blank line between blocks of code within a section
 - Two blank lines between different sections
 - One selector per line, followed by a comma or an opening curly brace
 - The opening curly brace should have a space before it
 - Properties and their values should be
-- indented with one tab
-- on the same line as each other
-- always closed with a semicolon - including the last one
+    - indented with one indentation (four spaces)
+    - on the same line as each other
+    - always closed with a semicolon - including the last one
 - The closing curly brace is indented at the same level as the opening selector
 
 For example:
@@ -68,7 +67,7 @@ But not:
     }
 
 or
-    
+
     .selector-one,
     .selector-two,
     .selector-three{background: lawngreen;
@@ -78,37 +77,34 @@ or
 
 Modular coding
 --------------
-Reusing code is great, since it minimises file size - but further down the road can end up with a spaghetti. So, even if it means repeating things, keep styles specific to a module or a shared style. We can run the larger code through a minifier that combines selectors which have shared properties at a later date for production.
+Reusing code is great, since it minimises file size - but further down the road can end up with a spaghetti. Even if it means repeating things, keep styles specific to a module or a shared style.
+
+BEM is ideal for this, as it allows us to see just from the CSS what styles do what where.
 
 **Correct:**
 
-    .image {
-        border: 1px solid grey;
-        padding: 1px;
-    }
-    
-    .full-width-image {
-        /* use with .image */
-        width: 100%;
-    }
-    
-    .half-width-image {
-        /* use with .image */
-        width: 50%;
+    .menu {
+        background: goldenrod;
     }
 
-**or**
-
-    .full-width-image {
-        border: 1px solid grey;
-        padding: 1px;
-        width: 100%;
+    .menu__tab {
+        border-radius: 0.5em 0.5em 0 0;
     }
-    
-    .half-width-image {
-        border: 1px solid grey;
-        padding: 1px;
-        width: 50%;
+
+    .menu__tab--active {
+        background: green;
+    }
+
+    .header {
+        background: goldenrod;
+    }
+
+    .search {
+        width: 25%
+    }
+
+    .search__submit {
+        background: goldenrod;
     }
 
 
@@ -119,20 +115,24 @@ Reusing code is great, since it minimises file size - but further down the road 
             padding: 1px;
         }
 
-**Incorrect:** this path leads to convoluted code
+**Incorrect:** premature optimisation - this path leads to convoluted code
 
-    .full-width-image,
-    .half-width-image {
-        border: 1px solid grey;
-        padding: 1px;
+    .menu,
+    .header,
+    .search__submit {
+        background: goldenrod;
     }
-    
-    .full-width-image {
-        width: 100%;
+
+    .search {
+        width: 25%
     }
-    
-    .half-width-image {
-        width: 50%;
+
+    .menu__tab {
+        border-radius: 0.5em 0.5em 0 0;
+    }
+
+    .menu__tab--active {
+        background: green;
     }
 
 
@@ -145,27 +145,38 @@ Broad selectors give efficient and easily understandable code, but can lead to u
 
 **Don't use `#id` for styling.** They're too specific and give long term pain. They lack reusability, tend to lean towards use-once code, and the only way to override them is with the dreaded `!important`. So we don't use `#id` for styling.
 
-**Broad selectors - such as `figure`, `header`, `footer` - are broadly fine**. They should be used as foundation styles, but be careful when using broader selectors such as section and article.
+**Broad selectors - such as `figure`, `p`, `i` etc - are okay for foundation styles**. This means only for setting up a base to build apon. If possible avoid this.
 
-`p`, `a`, `form`, `small` etc should also be thought of as foundation styles to be built upon. For example:
+We aim to keep semantic markup separate from style. Most of your styling should be done using classes. They’re flexible enough to be broad and specific, allow reusing without creating a spaghetti of CSS code.
+
+However `p`, `a`, `strong` `form`, `small` etc should also be thought of as foundation styles to be built upon. After all, it'd be daft to attach a class to every single `p` or `strong` tag!
+
+For example:
 
     /* foundation paragraph style */
     p {
+        color: steelblue;
         font-size: 1em;
         padding: 0 0 1em 0;
     }
-    
+
     /* style specific to paragraphs within a figure */
-    figure p {
-        padding: 0.25em;
+    .content__figure p {
+        padding-bottom: 0.25em;
     }
 
-`div` and `span` are used in too many different circumstances and shouldn't be used as selectors.
+    .aside__figure p {
+        padding-left: 0.5em;
+    }
 
-**Classes are used for specific styling.** They’re flexible enough to be broad and specific, allow reusing without creating a spaghetti of CSS code.
 
-- When naming classes, try and make them human readable that describes the element(s) that they style or the function they carry out.
-- Always use lowercase and separate words with hyphens - no `.CamelCase` and `.under_scores`
+- When naming classes, use the BEM syntax.
+- Make classes human readable - describe the element(s) that they style or the function they carry out:
+    - .search
+    - .search__input
+    - .search__submit--loading
+- Always use lowercase and separate words with hyphens - no `.CamelCase` and `.under_scores`:
+    - .adoption-footer__sumartran-orang-utan
 - Attribute selectors should use single quotes - increases legibility for humans.
 - Target only the class, not the element and class - for example: `.comment-form`, not `div.comment-form`
 - Be careful of selector supporter in older browsers - for example, `input[type='password']` or `input:not([type='submit'])not:([type='password'])`. Use them, but use with caution.
@@ -175,13 +186,13 @@ Broad selectors give efficient and easily understandable code, but can lead to u
     header,
     footer {
     }
-    
+
     .visually-hidden {
     }
-    
+
     input[type='submit'] {
     }
-    
+
     input[type='number'] {
     }
 
@@ -190,10 +201,10 @@ Broad selectors give efficient and easily understandable code, but can lead to u
 
     div#logo {
     }
-    
+
     #logo {
     }
-    
+
     h1.logo {
     }
 
@@ -202,7 +213,7 @@ Properties
 ----------
 
 - 0.5em, not .5em - as makes it easier to distinguish between 0.5em and 5em
-- Single quotation marks for attribute selectors, property values, and URI values.
+- Double quotation marks for attribute selectors, property values, and URI values.
 
     header {
         font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -225,8 +236,8 @@ Alphabetic - nice and simple.
         z-index: 1;
     }
 
-A special mention for vendor prefixes; they're alphabetacised as if they don't have the vendor prefix. The W3C property comes last so that it isn't don’t overriden. They're indented with an extra tab and then alphabetised based on the vendor prefix.
-    
+A special mention for vendor prefixes; they're alphabetacised as if they don't have the vendor prefix. The W3C property comes last so that it isn't overriden. They're indented with an extra tab and then alphabetised based on the vendor prefix.
+
         -moz-transition: all 300ms linear;
         -ms-transition: all 300ms linear;
         -o-transition: all 300ms linear;
@@ -252,18 +263,18 @@ For example, in Less or Sass:
 
     /* method: */
     width: ( [pixel number] / [parent element em size]em );
-    
+
     /* for example: */
     width: ( 20 / 16em );
-    
+
     /* would output */
     width: 1.25em;
 
 If you don't use preprocessors, then still use `em` - the numbers will just neeed to be calculated by hand.
 
-*The reasoning:* using either pixels, points, or root ems block the cascade of inheritance. Using `em` or `%` we allow elements to inherit characteristics - which makes designing responsively much lighter, as we're not rewriting the CSS for every viewport size. 
+*The reasoning:* using either pixels, points, or root ems block the cascade of inheritance. Using `em` or `%` we allow elements to inherit characteristics - which makes designing responsively much lighter, as we're not rewriting the CSS for every viewport size.
 
-This can seem frustrating if you're unfamiliar with the C of CSS, but the killer advantage is that you can just change the root font size and everything else will change in proportion.
+This can seem frustrating if you're unfamiliar with the C of CSS, but the killer advantage is that you can just change the root font size and everything else will change in proportion. This means leaner, faster code when designing for different screen sizes.
 
 
 How to comment
@@ -278,14 +289,14 @@ For consistancy, the CSS style comments - `/* */` - are always used, even when u
 At the top of the style.css (see *File structure*), this description should go as a minimum. Note the exclamation mark, which (should) preserve the comment after minification.
 
     /*! ============================================================================
-    
+
     Project:        Name
-    Version:        [major].[minor].[bugfixes] 
+    Version:        [major].[minor].[bugfixes]
     Last change:    Date (quick comment)
     Assigned to:    Person, person, person
-    
+
     ============================================================================= */
-    
+
 The versioning follows semantic versioning[^!semanticversioning]
 
 Any other descriptors are welcome - contact details, to do list etc.
@@ -298,18 +309,18 @@ Any other descriptors are welcome - contact details, to do list etc.
         - another point, maybe a bugfix with a FIXME
         - TODO if needed
     ----------------------------------------------------------------------------- */
-    
+
 **Individual comments in the code** don't have the single or double lines.
 
 If referring to the whole selector, then the comment should sit inside it.
-    
+
     .standfirst p {
         /* this is to make the first paragraph into a standfirst */
         font-weight: bold;
     }
-    
+
 If referring to an individual property, it should sit on the same line after the semicolon:
-    
+
     font-size: 1.25em; /* equivalent to 20px */
     margin-top: 1.48em; /* FIXME magic number */
 
@@ -346,17 +357,17 @@ Any styles that are triggered by media queries should be placed within the style
 For example, within the <i>modules</i> stylesheet:
 
     [ Small screen rules for specific module here ]
-    
+
     @media (min-width: 37.5em) {
         /* break point is equivalent to 600px (37.5 x 16) */
         [ Medium screen rules for specific module here ]
     }
-    
+
     @media (min-width: 48em) {
         /* Break point equivalent to 768px (48 x 16) */
         [ Medium screen rules for specific module here ]
     }
-    
+
     @media (min-width: 80em) {
         /* Break point equivalent to 1280px (80 x 16) */
         [ Large screen rules for specific module here ]
