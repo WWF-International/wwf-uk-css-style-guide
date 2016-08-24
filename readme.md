@@ -215,26 +215,32 @@ Properties
 - 0.5em, not .5em - as makes it easier to distinguish between 0.5em and 5em
 - Double quotation marks for attribute selectors, property values, and URI values.
 
-    header {
-        font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        background-image: url('dancing-cat.gif');
+````
+header {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-image: url("dancing-cat.gif");
+    
+    &::before {
+        content: "Pseudo content";
     }
-
+}
+````
 
 Property ordering
 -----------------
 
 Alphabetic - nice and simple.
-
-    p {
-        background: #fff url('background.jpg') no-repeat 50%;
-        line-height: 2;
-        margin: 0;
-        padding: 0 1em 1em 0;
-        position: relative;
-        width: 50%;
-        z-index: 1;
-    }
+````
+p {
+    background: #fff url('background.jpg') no-repeat 50%;
+    line-height: 2;
+    margin: 0;
+    padding: 0 1em 1em 0;
+    position: relative;
+    width: 50%;
+    z-index: 1;
+}
+````
 
 A special mention for vendor prefixes; they're alphabetacised as if they don't have the vendor prefix. The W3C property comes last so that it isn't overriden. They're indented with an extra tab and then alphabetised based on the vendor prefix.
 
