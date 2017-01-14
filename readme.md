@@ -397,6 +397,11 @@ margin-top: 37px;
 - Know when to use the height property. It should be used when you are including outside elements (such as images). Otherwise use line-height for more flexibility.
 - Do not restate default property and value combinations (for instance `display: block;` on block-level elements [^!HTML5block].
 
+Capitals
+--------
+
+Where the design requires all-caps use `text-transform: uppoercase;` to achieve this. Text in the HTML source should appear in the same way as you would type it in an email. Doing it this way is much nicer for screen-readers, people who want to re-use the text, people who want to write the text and people who have to maintain the page if we decide that caps are no longer cool.
+
 ---------------------------------------
 
 Footnotes
